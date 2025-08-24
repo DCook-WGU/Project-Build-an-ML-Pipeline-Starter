@@ -14,7 +14,15 @@ docker rm   "$CONTAINER_NAME" >/dev/null 2>&1 || true
 
 echo "Done."
 
+# Deactivate conda env if inside one
+if [[ "$CONDA_DEFAULT_ENV" != "" ]]; then
+    conda deactivate
+fi
 
+# Deactivate conda env if inside one
+if [[ "$CONDA_DEFAULT_ENV" != "" ]]; then
+    conda deactivate
+fi
 
 # Original version
 #!/bin/bash
