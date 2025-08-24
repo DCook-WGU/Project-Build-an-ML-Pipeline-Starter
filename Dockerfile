@@ -35,9 +35,18 @@ ENV ENV_NAME=${ENV_NAME}
 
 # Create conda environment
 COPY environment.yml /app/environment.yml
+
 #RUN conda env create --name ${ENV_NAME} -f ${ENV_FILE}
-RUN conda env create --name "${ENV_NAME}" -f "${ENV_FILE}" \
-    && conda clean -afy
+#RUN conda env create --name "${ENV_NAME}" -f "${ENV_FILE}" \
+#    && conda clean -afy
+
+RUN conda install -n base -y conda-libmamba-solver && \
+    conda config --system --set solver libmamba && \
+    conda config --system --set channel_priority strict && \
+    conda env create --name "${ENV_NAME}" -f "${ENV_FILE}" \
+        --override-channels -c conda-forge && \
+    conda clean -afy 
+
 
 # Set conda environment for all future steps
 #SHELL ["conda", "run", "-n", "${ENV_NAME}", "/bin/bash", "-c"]
