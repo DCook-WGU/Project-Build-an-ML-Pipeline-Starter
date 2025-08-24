@@ -25,7 +25,7 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh &
 ENV PATH="/opt/miniconda/bin:$PATH"
 
 # -------- key part: parametrize env name and file ----------
-ARG ENV_NAME=mlops-dev-course
+ARG ENV_NAME=mlops-dev-project
 ARG ENV_FILE=/app/environment.yml
 
 # Make ENV_NAME available at runtime (entrypoint uses it)
