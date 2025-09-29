@@ -74,6 +74,9 @@ def go(args):
     ######################################
     # Fit the pipeline sk_pipe by calling the .fit method on X_train and y_train
     # YOUR CODE HERE
+
+    sk_pipe.fit(X_train, y_train)
+
     ######################################
 
     # Compute r2 and MAE
@@ -97,6 +100,29 @@ def go(args):
     # HINT: use mlflow.sklearn.save_model
     mlflow.sklearn.save_model(
         # YOUR CODE HERE
+
+        #https://mlflow.org/docs/latest/api_reference/python_api/mlflow.sklearn.html#mlflow.sklearn.save_model
+        # Save the model in cloudpickle format
+        # set path to location for persistence
+        #sk_path_dir_1 = ...
+        #mlflow.sklearn.save_model(
+        #    sk_model,
+        #    sk_path_dir_1,
+        #    serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
+        #)
+
+        # save the model in pickle format
+        # set path to location for persistence
+        #sk_path_dir_2 = ...
+        # mlflow.sklearn.save_model(
+        #    sk_model,
+        #    sk_path_dir_2,
+        #    serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_PICKLE,
+        #)
+
+        
+
+
         input_example = X_train.iloc[:5]
     )
     ######################################
@@ -120,6 +146,11 @@ def go(args):
     run.summary['r2'] = r_squared
     # Now save the variable mae under the key "mae".
     # YOUR CODE HERE
+
+
+    #https://learn.microsoft.com/en-us/azure/machine-learning/how-to-log-view-metrics?view=azureml-api-2&tabs=interactive
+    run.log_metric("mae", mae)
+
     ######################################
 
     # Upload to W&B the feture importance visualization
@@ -163,6 +194,8 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     # 2 - A OneHotEncoder() step to encode the variable
     non_ordinal_categorical_preproc = make_pipeline(
         # YOUR CODE HERE
+
+        
     )
     ######################################
 
