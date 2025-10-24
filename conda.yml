@@ -9,8 +9,8 @@ dependencies:
   - pip:
       - mlflow==3.4.0
       - wandb==0.22.0
-      - hydra-core=1.3.3 # Moved due to channel error preventing build of docker
-      - hydra-joblib-launcher==1.2.0 # Adding from course files, was an error of typical error
-      - omegaconf==2.3.0 # Adding from course files, was an error of typical error
-      - databricks-cli==0.18.0    # # Adding from course files, was an error of typical error, this fixes the import crash caused by outdated course work files
-      - setuptools<81             # # Adding from course files, was an error of typical error, this silences pkg_resources deprecation
+      - hydra-core==1.3.2             # Moved due to channel error preventing build of docker
+      - hydra-joblib-launcher==1.2.0  # Adding from course files, was an error of typical error
+      - omegaconf==2.3.0              # Adding from course files, was an error of typical error
+      - databricks-cli==0.18.0        # Adding from course files, was an error of typical error, this fixes the import crash caused by outdated course work files
+      - setuptools<81                 # Adding from course files, was an error of typical error, this silences pkg_resources deprecationp
