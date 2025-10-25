@@ -92,9 +92,15 @@ def go(args):
 
     logger.info("Exporting model")
 
+
+    random_forest_dir = "random_forest_dir" 
+
     # Save model package in the MLFlow sklearn format
     if os.path.exists("random_forest_dir"):
         shutil.rmtree("random_forest_dir")
+
+    
+    os.makedirs(random_forest_dir, exist_ok=True)
 
     ######################################
     # Save the sk_pipe pipeline as a mlflow.sklearn model in the directory "random_forest_dir"
@@ -102,7 +108,7 @@ def go(args):
     mlflow.sklearn.save_model(
         # YOUR CODE HERE
         sk_pipe,
-        random_forest_dir,
+        path = random_forest_dir,
         input_example = X_train.iloc[:5]
     )
     ######################################
