@@ -63,12 +63,12 @@ def go(config: DictConfig):
                 os.path.join(root_path, "src/basic_cleaning"),
                 "main",
                 parameters={
-                    "input_artifact": "raw_data.csv:latest",
+                    "input_artifact": "sample.csv:latest",
                     "output_artifact": "clean_sample.csv",
                     "output_type": "clean_sample", 
                     "output_description": "Cleaned sample of the dataset", 
-                    "min_price": config["etl"]["min_price"], 
-                    "max_price": config["etl"]["max_price"]
+                    "min_price": float(config["etl"]["min_price"]), 
+                    "max_price": float(config["etl"]["max_price"])
                 },
             )
 
