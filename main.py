@@ -122,7 +122,7 @@ def go(config: DictConfig):
             ##################
 
             _ = mlflow.run(
-                os.path.join(root_path, "src/data_check"),
+                os.path.join(root_path, "src/train_random_forest"),
                 "main",
                 parameters={
                     "trainval_artifact": "trainval_data.csv:latest",
