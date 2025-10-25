@@ -17,10 +17,35 @@ echo "Building image: $IMAGE"
 
 
 NO_CACHE=${NO_CACHE:-0}
-[[ "$NO_CACHE" == "1" ]] && NC_FLAG="--no-cache" || NC_FLAG=""
-docker build --pull -t "$IMAGE" .
+if [[ "$NO_CACHE" == "1" ]]; then 
+    NC_FLAG="--no-cache" 
+else 
+    NC_FLAG=""
+fi 
+
+
+docker build $NC_FLAG --pull -t "$IMAGE" .
 
 echo "Rebuilt image: $IMAGE"
+
+echo "Starting container: $CONTAINER_NAME"
+
+# Warn (but don't fail) if WANDB_API_KEY isn't set in your WSL env
+if [[ -z "${WANDB_API_KEY:-}" ]]; then
+  echo "⚠️  WANDB_API_KEY is not set. Set it in ~/.bashrc or export it before running."
+fi
+
+docker run -d --name "$CONTAINER_NAME" \
+  -v "$(pwd)":/app \
+  -e WANDB_API_KEY="${WANDB_API_KEY:-}" \
+  -e PYTHONPATH="/app:${PYTHONPATH:-}" \
+  -w /app \
+  "$IMAGE" \
+  bash -lc "sleep infinity"
+
+echo "Container is up. Exec with: docker exec -it $CONTAINER_NAME bash"
+
+
 
 # To run no cache rebuild, use command below.
 # NO_CACHE=1 ./rebuild.sh

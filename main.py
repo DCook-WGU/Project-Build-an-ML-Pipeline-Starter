@@ -7,6 +7,8 @@ import wandb
 import hydra
 from omegaconf import DictConfig
 
+import pathlib, sys
+
 _steps = [
     "download",
     "basic_cleaning",
@@ -21,8 +23,26 @@ _steps = [
 
 
 # This automatically reads in the configuration
-@hydra.main(config_name='config')
+#@hydra.main(config_name='config')
+#@hydra.main(config_name="config", version_base=None) # To fix the first warning regarding missing version 
+@hydra.main(config_path=".", config_name="config", version_base=None) # To fix first and second warning regarding missing version and config path
 def go(config: DictConfig):
+
+
+    # This will add /app/common onto my PYTHONPATH so that all child mlflow runs can my import common.utils
+    project_root = pathlib.Path(__file__).resolve().parent
+    root_dir = str(project_root)
+
+    if root_dir not in sys.path:
+        sys.path.insert(0, root_dir)
+
+    # This allows the child inherit of the utils module
+    os.environ["PYTHONPATH"] = f"{root_dir}:{os.environ.get('PYTHONPATH','')}"
+    
+    # This will now share the utility file import and silence pydantic warnings globally
+    from common.utils import silence_pydantic_warnings
+    silence_pydantic_warnings()
+
 
     # Setup the wandb experiment. All runs will be grouped under this name
     os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
@@ -77,7 +97,7 @@ def go(config: DictConfig):
             # Implement here #
             ##################
  
-             _ = mlflow.run(
+            _ = mlflow.run(
                 os.path.join(root_path, "src/data_check"),
                 "main",
                 parameters={

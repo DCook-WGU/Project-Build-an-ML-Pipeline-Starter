@@ -62,6 +62,9 @@ WORKDIR /app
 # Copy project files into the image
 COPY . .
 
+# Ensure /app is always importable (common/*) and sitecustomize.py auto-loads
+ENV PYTHONPATH="/app:${PYTHONPATH}"
+
 # Enable conda activate in interactive shells
 RUN conda init bash
 
