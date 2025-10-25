@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Load Conda
 source /opt/miniconda/etc/profile.d/conda.sh
@@ -13,6 +14,13 @@ grep -qxF "conda activate $ENV_NAME" ~/.bashrc || echo "conda activate $ENV_NAME
 # Activate it now (for current session)
 #conda activate mlops
 conda activate "$ENV_NAME"
+
+# Ensure /app is on PYTHONPATH (for common/ and sitecustomize.py)
+export PYTHONPATH="/app:${PYTHONPATH:-}"
+
+# Optional: quick diagnostics
+echo "[entrypoint] Conda env: ${ENV_NAME}"
+echo "[entrypoint] PYTHONPATH: ${PYTHONPATH}"
 
 # Log in to Weights & Biases
 if [ -n "$WANDB_API_KEY" ]; then
