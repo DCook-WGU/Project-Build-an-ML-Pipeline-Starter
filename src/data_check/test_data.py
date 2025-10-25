@@ -119,4 +119,4 @@ def test_price_range(data: pd.DataFrame, min_price: float, max_price: float):
         AssertionError: If an item's price range is outside of the defined range. 
     """
 
-    assert data['price'].between(min_price, max_price, inclusive=True).all()
+    assert data['price'].between(min_price, max_price, inclusive="both").all()
