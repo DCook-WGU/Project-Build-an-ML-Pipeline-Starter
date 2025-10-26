@@ -1,7 +1,7 @@
 import warnings
 
 
-# TODO(issue #12): Investigate remaining MLflow PydanticDeprecatedSince20 warning.
+# TODO(issue #1): Investigate remaining MLflow PydanticDeprecatedSince20 warning.
 #  This warning appears once during MLflow startup (mlflow.gateway.config)
 #  and may require deeper upstream patching or waiting for MLflow to update
 #  its internal Pydantic model definitions.
