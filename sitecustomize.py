@@ -1,5 +1,23 @@
 import warnings
 
+# Catch by exact message (robust even if category changes)
+warnings.filterwarnings(
+    "ignore",
+    message=r"Support for class-based [`']config[`'] is deprecated.*"
+)
+
+# Catch anything Pydantic emits in its internals (emitter module)
+warnings.filterwarnings(
+    "ignore",
+    category=Warning,
+    module=r"pydantic(\.|$)"
+)
+warnings.filterwarnings(
+    "ignore",
+    category=Warning,
+    module=r"pydantic\._internal\._generate_schema"
+)
+
 # Kill MLflow gateway deprecation early, no Pydantic import needed
 warnings.filterwarnings(
     "ignore",
