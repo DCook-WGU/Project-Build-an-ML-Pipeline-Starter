@@ -132,8 +132,8 @@ cd Project-Build-an-ML-Pipeline-Starter
 # 3. Enter the running container
 docker exec -it mlops-project bash
 
-# 4. Activate the environment
-conda activate nyc_airbnb_dev
+# 4. Activate the environment (It should auto activate this env for you, but just in case.)
+conda activate mlops-dev-project
 
 # 5. Run the pipeline
 mlflow run .
@@ -249,8 +249,10 @@ You can see the parameters that they require by looking into their `MLproject` f
 ```bash
 ./rebuild.sh
 docker exec -it mlops-project bash
-conda activate nyc_airbnb_dev
+conda activate mlops-dev-project
 ```
+
+> Note: It should auto activate the conda env, but if it doesn't then use the command above.
 
 **Daily Use (No rebuild needed)**
 ```bash
