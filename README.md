@@ -110,7 +110,7 @@ docker exec -it mlops-project bash
 
 Then activate the Conda environment inside the container:
 ```bash
-conda activate nyc_airbnb_dev
+conda activate mlops-dev-project
 ```
 
 Your environment is now ready for MLflow and W&B usage.
