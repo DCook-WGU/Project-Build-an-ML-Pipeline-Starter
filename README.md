@@ -1,4 +1,5 @@
 # Build an ML Pipeline for Short-Term Rental Prices in NYC
+
 You are working for a property management company renting rooms and properties for short periods of 
 time on various rental platforms. You need to estimate the typical price for a given property based 
 on the price of similar properties. Your company receives new data in bulk every week. The model needs 
@@ -11,10 +12,16 @@ In this project you will build such a pipeline.
 - [Preliminary steps](#preliminary-steps)
   * [Fork the Starter Kit](#fork-the-starter-kit)
   * [Create environment](#create-environment)
+  * [Quick Start (First-Time Setup)](#quick-start-first-time-setup)
   * [Get API key for Weights and Biases](#get-api-key-for-weights-and-biases)
   * [The configuration](#the-configuration)
   * [Running the entire pipeline or just a selection of steps](#Running-the-entire-pipeline-or-just-a-selection-of-steps)
   * [Pre-existing components](#pre-existing-components)
+  * [Rebuild vs Start — Which Script to Use?](#rebuild-vs-start--which-script-to-use)
+  * [Useful Commands Summary](#useful-commands-summary)
+  * [Public Links](#public-links)
+
+---
 
 ## Preliminary steps
 
@@ -32,31 +39,107 @@ Please ensure you are using one of the supported OS versions to avoid compatibil
 
 This project requires **Python 3.10**. Please ensure that you have Python 3.10 installed and set as the default version in your environment to avoid any runtime issues.
 
+---
+
+### Using WSL and Docker (Recommended Setup)
+
+For consistent development across systems, this project supports running inside a **Docker container on WSL2**.
+
+#### Prerequisites (Windows)
+1. Enable WSL2 and install Ubuntu 22.04:
+   ```bash
+   wsl --install
+   ```
+2. Install [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop).
+   - Enable “Use the WSL 2 based engine”
+   - Enable “Integrate with my default WSL distro (Ubuntu)”
+3. Verify Docker works inside WSL:
+   ```bash
+   docker run hello-world
+   ```
+
+#### macOS and Linux
+Docker runs natively. Ensure Docker Engine is installed and running before proceeding.
+
+---
+
 ### Fork the Starter kit
 Go to [https://github.com/udacity/Project-Build-an-ML-Pipeline-Starter](https://github.com/udacity/Project-Build-an-ML-Pipeline-Starter)
 and click on `Fork` in the upper right corner. This will create a fork in your Github account, i.e., a copy of the
 repository that is under your control. Now clone the repository locally so you can start working on it:
 
-```
+```bash
 git clone https://github.com/[your github username]/Project-Build-an-ML-Pipeline-Starter.git
 ```
 
 and go into the repository:
 
-```
+```bash
 cd Project-Build-an-ML-Pipeline-Starter
 ```
+
 Commit and push to the repository often while you make progress towards the solution. Remember 
 to add meaningful commit messages.
 
-### Create environment
-Make sure to have conda installed and ready, then create a new environment using the ``environment.yaml``
-file provided in the root of the repository and activate it:
+---
+
+### Create Environment (Using Docker)
+
+Instead of manually creating a Conda environment, this project provides a script to build and launch a Docker container with the full setup.
+
+From your Ubuntu (WSL) or macOS/Linux terminal:
 
 ```bash
-> conda env create -f environment.yml
-> conda activate nyc_airbnb_dev
+# Navigate to the folder where you cloned the repository
+cd Project-Build-an-ML-Pipeline-Starter
+
+# Build the Docker image and start the container
+./rebuild.sh
 ```
+
+This script will:
+1. Stop and remove any old container (if it exists)
+2. Build a new Docker image using the included Dockerfile
+3. Start a container in the background
+4. Print a command you can use to connect to the container
+
+Once complete, connect to your running container:
+```bash
+docker exec -it mlops-project bash
+```
+
+Then activate the Conda environment inside the container:
+```bash
+conda activate nyc_airbnb_dev
+```
+
+Your environment is now ready for MLflow and W&B usage.
+
+---
+
+### Quick Start (First-Time Setup)
+
+If this is your first time setting up the project, follow these steps:
+
+```bash
+# 1. Clone this repository
+git clone https://github.com/DCook-WGU/Project-Build-an-ML-Pipeline-Starter.git
+cd Project-Build-an-ML-Pipeline-Starter
+
+# 2. Build and start the container
+./rebuild.sh
+
+# 3. Enter the running container
+docker exec -it mlops-project bash
+
+# 4. Activate the environment
+conda activate nyc_airbnb_dev
+
+# 5. Run the pipeline
+mlflow run .
+```
+
+---
 
 ### Get API key for Weights and Biases
 Let's make sure we are logged in to Weights & Biases. Get your API key from W&B by going to 
@@ -64,7 +147,7 @@ Let's make sure we are logged in to Weights & Biases. Get your API key from W&B 
 then paste your key into this command:
 
 ```bash
-> wandb login [your API key]
+wandb login [your API key]
 ```
 
 You should see a message similar to:
@@ -72,6 +155,9 @@ You should see a message similar to:
 wandb: Appending key for api.wandb.ai to your netrc file: /home/[your username]/.netrc
 ```
 
+> NOTE: If you do not add your W&B API key here, it will not break the system. You will be prompted to on the first to either create a new account or connect to an existing account. When prompted you can input 2 and hit enter. Then you will be prompted to copy and paste your API key. 
+
+---
 
 ### The configuration
 As usual, the parameters controlling the pipeline are defined in the ``config.yaml`` file defined in
@@ -86,12 +172,14 @@ the configuration file. It can be accessed from the ``go`` function as
 NOTE: do NOT hardcode any parameter when writing the pipeline. All the parameters should be 
 accessed from the configuration file.
 
+---
+
 ### Running the entire pipeline or just a selection of steps
 In order to run the pipeline when you are developing, you need to be in the root of the starter kit, 
 then you can execute as usual:
 
 ```bash
->  mlflow run .
+mlflow run .
 ```
 This will run the entire pipeline.
 
@@ -100,21 +188,23 @@ the ``download`` step. The `main.py` is written so that the steps are defined at
 ``_steps`` list, and can be selected by using the `steps` parameter on the command line:
 
 ```bash
-> mlflow run . -P steps=download
+mlflow run . -P steps=download
 ```
 If you want to run the ``download`` and the ``basic_cleaning`` steps, you can similarly do:
 ```bash
-> mlflow run . -P steps=download,basic_cleaning
+mlflow run . -P steps=download,basic_cleaning
 ```
 You can override any other parameter in the configuration file using the Hydra syntax, by
 providing it as a ``hydra_options`` parameter. For example, say that we want to set the parameter
 modeling -> random_forest -> n_estimators to 10 and etl->min_price to 50:
 
 ```bash
-> mlflow run . \
+mlflow run . \
   -P steps=download,basic_cleaning \
   -P hydra_options="modeling.random_forest.n_estimators=10 etl.min_price=50"
 ```
+
+---
 
 ### Pre-existing components
 In order to simulate a real-world situation, we are providing you with some pre-implemented
@@ -135,45 +225,65 @@ _ = mlflow.run(
                 },
             )
 ```
+
 where `config['main']['components_repository']` is set to 
 [https://github.com/udacity/Project-Build-an-ML-Pipeline-Starter/tree/main/components](https://github.com/udacity/Project-Build-an-ML-Pipeline-Starter/tree/main/components).
+
 You can see the parameters that they require by looking into their `MLproject` file:
 
 - `get_data`: downloads the data. [MLproject](https://github.com/udacity/Project-Build-an-ML-Pipeline-Starter/blob/main/components/get_data/MLproject)
-- `train_val_test_split`: segrgate the data (splits the data) [MLproject](https://github.com/udacity/Project-Build-an-ML-Pipeline-Starter/blob/main/components/train_val_test_split/MLproject)
+- `train_val_test_split`: segregate the data (splits the data) [MLproject](https://github.com/udacity/Project-Build-an-ML-Pipeline-Starter/blob/main/components/train_val_test_split/MLproject)
 
-## In case of errors
+---
 
-### Environments
-When you make an error writing your `conda.yml` file, you might end up with an environment for the pipeline or one
-of the components that is corrupted. Most of the time `mlflow` realizes that and creates a new one every time you try
-to fix the problem. However, sometimes this does not happen, especially if the problem was in the `pip` dependencies.
-In that case, you might want to clean up all conda environments created by `mlflow` and try again. In order to do so,
-you can get a list of the environments you are about to remove by executing:
+## 🧠 Rebuild vs Start — Which Script to Use?
 
-```
-> conda info --envs | grep mlflow | cut -f1 -d" "
-```
+| Script | Builds Image? | Removes Old Container? | Runs Interactively? | Use When |
+|--------|----------------|------------------------|---------------------|----------|
+| **`./rebuild.sh`** | ✅ Yes | ✅ Yes | 💤 Detached (background) | First-time setup or after Dockerfile/environment changes |
+| **`./start.sh`** | ❌ No | ❌ No | ✅ Interactive (`-it`) | Reusing an existing image for daily development |
 
-If you are ok with that list, execute this command to clean them up:
+### Common Workflows
 
-**_NOTE_**: this will remove *ALL* the environments with a name starting with `mlflow`. Use at your own risk
-
-```
-> for e in $(conda info --envs | grep mlflow | cut -f1 -d" "); do conda uninstall --name $e --all -y;done
+**First-Time Setup**
+```bash
+./rebuild.sh
+docker exec -it mlops-project bash
+conda activate nyc_airbnb_dev
 ```
 
-This will iterate over all the environments created by `mlflow` and remove them.
-
-### MLflow & Wandb
-
-If you see the any error while running the command:
-
-```
-> mlflow run .
+**Daily Use (No rebuild needed)**
+```bash
+./start.sh
 ```
 
-Please, make sure all steps are using **the same** python version and that you have **conda installed**. Additionally, *mlflow* and *wandb* packages are crucial and should have the same version.
+---
+
+## 📦 Useful Commands Summary
+
+| Task | Command |
+|------|----------|
+| Build & start container | `./rebuild.sh` |
+| Enter running container | `docker exec -it mlops-project bash` |
+| Restart without rebuild | `./start.sh` |
+| Run pipeline | `mlflow run .` |
+| Check Conda env | `conda env list` |
+| View W&B runs | [https://wandb.ai](https://wandb.ai) |
+
+---
+
+## Public Links
+
+- **GitHub Repository:** [https://github.com/DCook-WGU/Project-Build-an-ML-Pipeline-Starter](https://github.com/DCook-WGU/Project-Build-an-ML-Pipeline-Starter)  
+- **Latest Release:** [https://github.com/DCook-WGU/Project-Build-an-ML-Pipeline-Starter/releases/latest](https://github.com/DCook-WGU/Project-Build-an-ML-Pipeline-Starter/releases/latest)  
+- **Weights & Biases Project:** [https://wandb.ai/dcoo230-western-governors-university/nyc_airbnb?nw=nwuserdcoo230](https://wandb.ai/dcoo230-western-governors-university/nyc_airbnb?nw=nwuserdcoo230)
+
+> Make sure your W&B project is **public** (Settings → Access → Public).  
+> Reviewers must be able to open this link without logging in.
+
+> NOTE: I am unable to make my project public, my trial expired prior to being able to complete the class and I had to apply for an academic account extension. This unfortuately made my account attached to a team, "dcoo230-western-governors-university-org", and I am unable to change privacy/visibility to anything other than "Team" or "Restricted". I tried created a new account this time set to "Student" as the organization/institute with "Personal" as the account type, and it still restricted the "Public" access. This feature now appears to be behind a pay-wall. 
+
+---
 
 
 ## License
