@@ -286,6 +286,11 @@ conda activate mlops-dev-project
 
 > NOTE: I am unable to make my project public, my trial expired prior to being able to complete the class and I had to apply for an academic account extension. This unfortuately made my account attached to a team, "dcoo230-western-governors-university-org", and I am unable to change privacy/visibility to anything other than "Team" or "Restricted". I tried created a new account this time set to "Student" as the organization/institute with "Personal" as the account type, and it still restricted the "Public" access. This feature now appears to be behind a pay-wall. 
 
+> Note: Inside the /docs/WeightsAndBiases-Exports directory, I included screenshots of my runs, the train random forest table view, my artifact linage's graph view with and without expanded history, the project profile page, the edit project panel (Where you can see public is not available), and a csv export of my data. 
+
+
+
+
 ---
 
 
