@@ -276,7 +276,8 @@ conda activate nyc_airbnb_dev
 
 - **GitHub Repository:** [https://github.com/DCook-WGU/Project-Build-an-ML-Pipeline-Starter](https://github.com/DCook-WGU/Project-Build-an-ML-Pipeline-Starter)  
 - **Latest Release:** [https://github.com/DCook-WGU/Project-Build-an-ML-Pipeline-Starter/releases/latest](https://github.com/DCook-WGU/Project-Build-an-ML-Pipeline-Starter/releases/latest)  
-- **Weights & Biases Project:** [https://wandb.ai/dcoo230-western-governors-university/nyc_airbnb?nw=nwuserdcoo230](https://wandb.ai/dcoo230-western-governors-university/nyc_airbnb?nw=nwuserdcoo230)
+- **Weights & Biases Project: Submission for grading** [https://wandb.ai/dcoo230-western-governors-university/nyc_airbnb?nw=nwuserdcoo230](https://wandb.ai/dcoo230-western-governors-university/nyc_airbnb?nw=nwuserdcoo230)
+- **Weights & Biases Project: Testing work** [https://wandb.ai/dcoo230-western-governors-university/nyc_airbnb_original?nw=nwuserdcoo230](https://wandb.ai/dcoo230-western-governors-university/nyc_airbnb_original?nw=nwuserdcoo230)
 
 > Make sure your W&B project is **public** (Settings → Access → Public).  
 > Reviewers must be able to open this link without logging in.
